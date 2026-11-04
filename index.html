@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Al Zeya Academy — Girls Islamic Academy | Gorakhpur</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--paper:#F6F1E7;--paper2:#EFE8D9;--ink:#14231C;--inksoft:#3C4A42;--green:#24382E;--deep:#1A2B23;--gold:#C9932B;--goldsoft:#E8D5A8;--line:#D8CFBB;--white:#FFFDF8;--danger:#A83B2A;--serif:'Fraunces',serif;--sans:'Sora',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6}
+h1,h2,h3,h4{font-family:var(--serif);line-height:1.15}button{font-family:var(--sans);cursor:pointer}
+input,select,textarea{font-family:var(--sans)}.container{max-width:1180px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:100;background:rgba(246,241,231,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{font-family:var(--serif);font-size:1.3rem;color:var(--ink);text-decoration:none}.logo em{color:var(--gold)}
+nav.main a{text-decoration:none;color:var(--inksoft);font-weight:500;font-size:.86rem;padding:9px 15px;border-radius:99px;margin-left:2px}
+nav.main a:hover{background:var(--paper2)}nav.main a.active{background:var(--green);color:var(--paper)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:99px;border:none;font-weight:600;font-size:.88rem;text-decoration:none;transition:.25s}
+.btn-p{background:var(--green);color:var(--paper)}.btn-p:hover{background:var(--deep)}
+.btn-o{background:transparent;border:1.5px solid var(--ink);color:var(--ink)}.btn-s{padding:8px 16px;font-size:.8rem}
+.hero{padding:64px 0}.hero h1{font-size:clamp(2.3rem,5vw,4rem);letter-spacing:-.02em}.hero h1 em{color:var(--green)}.hero h1 .gold{color:var(--gold);font-style:italic}
+.badge{display:inline-block;border:1px solid var(--gold);padding:7px 16px;border-radius:99px;font-size:.74rem;font-weight:600;text-transform:uppercase;margin-bottom:20px;background:var(--white)}
+.hero p.sub{margin:18px 0 28px;color:var(--inksoft);max-width:560px}
+.stats{margin-top:50px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:24px;text-align:center;border-right:1px solid var(--line)}.stat:last-child{border:0}
+.stat b{font-family:var(--serif);font-size:2.1rem;color:var(--green);display:block}.stat span{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--inksoft)}
+.ticker{background:var(--deep);color:var(--goldsoft);display:flex;align-items:center;overflow:hidden}
+.ticker .lbl{background:var(--gold);color:var(--ink);font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;padding:12px 20px;flex-shrink:0}
+.tk{flex:1;overflow:hidden;white-space:nowrap}.tk div{display:inline-block;animation:tk 28s linear infinite}
+@keyframes tk{to{transform:translateX(-50%)}}
+.tk span{padding:0 24px;font-size:.88rem}
+section.pad{padding:70px 0}.kick{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px}
+h2.sec{font-size:clamp(1.7rem,3.4vw,2.5rem);margin-bottom:36px}h2.sec em{color:var(--green)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ccard{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:flex;flex-direction:column;transition:.3s}
+.ccard:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 18px 40px -18px rgba(20,35,28,.3)}
+.ccard h3{font-size:1.2rem;margin-bottom:4px}.ccard .lvl{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--inksoft);margin-bottom:10px}
+.ccard p{font-size:.87rem;color:var(--inksoft);flex:1;margin-bottom:14px}
+.ccard .meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.pill{font-size:.7rem;font-weight:600;border:1px solid var(--line);border-radius:99px;padding:5px 12px}.pill.fee{border-color:var(--gold);color:var(--gold)}
+.ccard .act{display:flex;gap:8px}.ccard .act .btn{flex:1;justify-content:center;font-size:.78rem;padding:9px 10px}
+.nrow{display:flex;gap:20px;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:12px}
+.ndate{flex-shrink:0;text-align:center;background:var(--paper2);border-radius:10px;padding:9px 13px;min-width:70px}
+.ndate b{font-family:var(--serif);font-size:1.35rem;color:var(--green);display:block}.ndate span{font-size:.62rem;text-transform:uppercase;color:var(--inksoft)}
+.nrow h3{font-size:1.05rem;margin-bottom:4px}.nrow p{font-size:.9rem;color:var(--inksoft)}
+.orow{display:flex;align-items:center;gap:24px;background:var(--deep);color:var(--paper);border-radius:14px;padding:24px 28px;margin-bottom:14px;flex-wrap:wrap}
+.orow .disc{font-family:var(--serif);font-style:italic;font-size:1.3rem;color:var(--gold);border:1.5px dashed var(--gold);border-radius:50%;width:88px;height:88px;display:grid;place-items:center;text-align:center;flex-shrink:0}
+.orow h3{margin-bottom:4px}.orow p{color:#CBDCD3;font-size:.88rem}.orow .valid{margin-left:auto;font-size:.72rem;text-transform:uppercase;color:var(--goldsoft)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.fcard{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:34px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fld{display:flex;flex-direction:column;gap:6px}.fld.full{grid-column:1/-1}
+.fld label{font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--inksoft)}
+.fld input,.fld select,.fld textarea{border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.92rem;background:var(--paper);outline:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--green)}
+.fld textarea{min-height:90px;resize:vertical}.fa{grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px}
+.citem{display:flex;gap:16px;align-items:center;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px}
+.citem .ic{width:42px;height:42px;border-radius:50%;background:var(--green);color:var(--goldsoft);display:grid;place-items:center;flex-shrink:0}
+.citem h4{font-size:.7rem;font-family:var(--sans);text-transform:uppercase;letter-spacing:.14em;color:var(--gold)}.citem p{font-weight:500;font-size:.92rem}
+.page{display:none}.page.active{display:block;animation:pin .4s}
+@keyframes pin{from{opacity:0;transform:translateY(16px)}}
+.phero{background:var(--deep);color:var(--paper);padding:56px 0}.phero h1{font-size:clamp(2rem,4.4vw,3.1rem)}.phero h1 em{color:var(--gold)}.phero p{color:#CBDCD3;margin-top:12px;max-width:560px}
+.empty{text-align:center;color:var(--inksoft);font-style:italic;padding:28px;border:1.5px dashed var(--line);border-radius:12px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:var(--paper);padding:12px 24px;border-radius:99px;font-size:.86rem;opacity:0;transition:.4s;z-index:300;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.mov{position:fixed;inset:0;background:rgba(20,35,28,.55);display:none;place-items:center;z-index:200;padding:20px}
+.mov.open{display:grid}.modal{background:var(--white);border-radius:18px;padding:32px;max-width:560px;width:100%;max-height:86vh;overflow-y:auto}
+.modal h3{font-size:1.35rem;margin-bottom:12px}
+.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+.subgrid div{display:flex;gap:8px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-size:.85rem}
+.afloat{position:fixed;bottom:22px;right:22px;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--goldsoft);border:none;display:grid;place-items:center;z-index:90;font-size:1.1rem}
+footer{background:var(--deep);color:#CBDCD3;padding:48px 0 24px;margin-top:60px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:32px;border-bottom:1px solid rgba(246,241,231,.15)}
+footer h4{color:var(--goldsoft);font-family:var(--sans);font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;margin-bottom:14px}
+footer a{color:#CBDCD3;text-decoration:none;font-size:.87rem;display:block;margin-bottom:8px}footer a:hover{color:var(--gold)}
+.fbot{padding-top:20px;font-size:.78rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.adminwrap{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 76px)}
+.aside{background:var(--deep);padding:26px 14px;display:flex;flex-direction:column;gap:5px}
+.aside .st{color:var(--gold);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;padding:0 12px;margin-bottom:12px}
+.atab{display:flex;gap:10px;align-items:center;padding:11px 13px;border-radius:9px;border:0;background:transparent;color:#CBDCD3;font-size:.86rem;text-align:left}
+.atab:hover{background:rgba(246,241,231,.08)}.atab.active{background:var(--gold);color:var(--ink);font-weight:600}
+.amain{padding:34px 38px}.apanel{display:none}.apanel.active{display:block}
+.apanel h2{font-size:1.6rem;margin-bottom:20px}
+.acard{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:16px}
+.acard h3{font-size:1rem;margin-bottom:14px}
+.drow{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:9px;background:var(--paper)}
+.drow .m{flex:1;min-width:0}.drow .m b{font-size:.9rem;display:block}.drow .m span{font-size:.76rem;color:var(--inksoft);display:block}
+.drow .a{display:flex;gap:7px}
+.mb{border:1px solid var(--line);background:var(--white);border-radius:8px;padding:6px 10px}
+.mb.del:hover{border-color:var(--danger);color:var(--danger)}
+.sbadge{font-size:.64rem;font-weight:700;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--goldsoft);color:var(--deep)}
+.stats5{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+.stats5 div b{font-family:var(--serif);font-size:2rem;color:var(--green);display:block}.stats5 div span{font-size:.72rem;text-transform:uppercase;color:var(--inksoft)}
+.dbst{display:inline-block;font-weight:600;font-size:.88rem;padding:6px 0}
+.lwrap{min-height:70vh;display:grid;place-items:center;padding:30px}
+.lcard{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:38px;max-width:400px;width:100%;text-align:center}
+.lerr{color:var(--danger);font-size:.8rem;margin-top:12px;display:none}
+@media(max-width:920px){nav.main{display:none}.grid3,.grid2,.fg{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stat:nth-child(2){border:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.adminwrap{grid-template-columns:1fr}.aside{flex-direction:row;overflow-x:auto;padding:10px}.aside .st{display:none}.atab{white-space:nowrap}.amain{padding:22px 16px}.fgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header><div class="container nav">
+  <a href="#" data-nav="home" class="logo">Al Zeya <em>Academy</em></a>
+  <nav class="main">
+    <a href="#" data-nav="home" class="active">Home</a><a href="#" data-nav="courses">Courses</a>
+    <a href="#" data-nav="admission">Admission</a><a href="#" data-nav="notices">Notices</a><a href="#" data-nav="contact">Contact</a>
+  </nav>
+  <a href="#" class="btn btn-p btn-s" data-nav="admission">Apply Now</a>
+</div></header>
+
+<main id="page-home" class="page active">
+  <div class="hero"><div class="container">
+    <span class="badge" id="hBadge"></span>
+    <h1 id="hTitle"></h1>
+    <p class="sub" id="hSub"></p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <a href="#" class="btn btn-p" data-nav="admission">Apply for Admission</a>
+      <a href="#" class="btn btn-o" data-nav="courses">View Courses</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>500+</b><span>Talibaat</span></div>
+      <div class="stat"><b>25+</b><span>Ustadzaat</span></div>
+      <div class="stat"><b>8</b><span>Courses</span></div>
+      <div class="stat"><b>96%</b><span>Success</span></div>
+    </div>
+  </div></div>
+  <div class="ticker"><div class="lbl">📢 Elaan</div><div class="tk"><div id="ticker"></div></div></div>
+  <section class="pad"><div class="container">
+    <div class="kick">Taza Elaanat</div><h2 class="sec">Latest <em>Notices</em></h2>
+    <div id="homeNotices"></div>
+    <div style="text-align:right;margin-top:16px"><a href="#" class="btn btn-o btn-s" data-nav="notices">All Notices →</a></div>
+  </div></section>
+  <section class="pad" style="padding-top:0"><div class="container">
+    <div class="kick">Khaas Mauqa</div><h2 class="sec">Special <em>Offers</em></h2>
+    <div id="homeOffers"></div>
+  </div></section>
+</main>
+
+<main id="page-courses" class="page">
+  <div class="phero"><div class="container"><div class="kick">Dars-e-Nizami</div><h1>Humare <em>Courses</em></h1>
+  <p>Aamaat se Aalimah tak — har course par "Explore" click karein to poori subjects list nazar aayegi.</p></div></div>
+  <section class="pad"><div class="container"><div class="grid3" id="coursesGrid"></div></div></section>
+</main>
+
+<main id="page-admission" class="page">
+  <div class="phero"><div class="container"><div class="kick">Admission</div><h1>Dakhla <em>Form</em></h1>
+  <p>Form mukammal karein — hum 24 ghante mein raabta karenge.</p></div></div>
+  <section class="pad"><div class="container" style="max-width:760px"><div class="fcard">
+    <form class="fg" id="admForm">
+      <div class="fld"><label>Student Name *</label><input id="aName" required></div>
+      <div class="fld"><label>Father Name *</label><input id="aFather" required></div>
+      <div class="fld"><label>Phone *</label><input type="tel" id="aPhone" required></div>
+      <div class="fld"><label>Course *</label><select id="aCourse" required></select></div>
+      <div class="fld"><label>Pichli Jamaat / Class *</label><input id="aClass" required></div>
+      <div class="fld"><label>Message (optional)</label><input id="aMsg"></div>
+      <div class="fa"><button class="btn btn-p">Submit Application</button></div>
+    </form>
+  </div></div></section>
+</main>
+
+<main id="page-notices" class="page">
+  <div class="phero"><div class="container"><div class="kick">Elaanat</div><h1>Notice <em>Board</em></h1></div></div>
+  <section class="pad"><div class="container" id="allNotices"></div></section>
+</main>
+
+<main id="page-contact" class="page">
+  <div class="phero"><div class="container"><div class="kick">Contact</div><h1>Raabta <em>Karein</em></h1></div></div>
+  <section class="pad"><div class="container grid2">
+    <div>
+      <div class="citem"><span class="ic">📍</span><div><h4>Address</h4><p id="ctAddress"></p></div></div>
+      <div class="citem"><span class="ic">📞</span><div><h4>Phone</h4><p id="ctPhone"></p></div></div>
+      <div class="citem"><span class="ic">✉️</span><div><h4>Email</h4><p id="ctEmail"></p></div></div>
+      <div class="citem"><span class="ic">🕐</span><div><h4>Timing</h4><p id="ctTiming"></p></div></div>
+    </div>
+    <div class="fcard"><form class="fg" id="ctForm">
+      <div class="fld"><label>Name *</label><input id="cName" required></div>
+      <div class="fld"><label>Phone *</label><input type="tel" id="cPhone" required></div>
+      <div class="fld full"><label>Message *</label><textarea id="cMsg" required></textarea></div>
+      <div class="fa"><button class="btn btn-p">Send Message</button></div>
+    </form></div>
+  </div></section>
+</main>
+
+<main id="page-login" class="page">
+  <div class="lwrap"><div class="lcard">
+    <h2>Admin Login</h2>
+    <p style="color:var(--inksoft);font-size:.86rem;margin:8px 0 20px">Password darj karein.</p>
+    <form id="loginForm"><div class="fg">
+      <div class="fld full"><input type="password" id="loginPass" placeholder="Password" required></div>
+      <div class="fa" style="justify-content:center"><button class="btn btn-p" style="width:100%;justify-content:center">Login</button></div>
+    </div></form>
+    <p class="lerr" id="loginErr">Ghalat password!</p>
+    <div style="margin-top:16px"><a href="#" data-nav="home" style="font-size:.82rem;color:var(--inksoft)">← Back to site</a></div>
+  </div></div>
+</main>
+<main id="page-admin" class="page"><div class="adminwrap">
+  <aside class="aside">
+    <div class="st">Admin Panel</div>
+    <button class="atab active" data-atab="dash">▦ Dashboard</button>
+    <button class="atab" data-atab="content">✎ Site Content</button>
+    <button class="atab" data-atab="coursesA">📖 Courses</button>
+    <button class="atab" data-atab="noticesA">📢 Notices</button>
+    <button class="atab" data-atab="offersA">🎁 Offers</button>
+    <button class="atab" data-atab="inbox">📥 Inbox</button>
+    <button class="atab" data-atab="db">🗄 Supabase DB</button>
+    <button class="atab" data-nav="home">← Back to Site</button>
+    <button class="atab" onclick="logout()" style="color:#E8B4A8">⎋ Logout</button>
+  </aside>
+  <div class="amain">
+    <div class="apanel active" id="panel-dash"><h2>Dashboard</h2>
+      <div class="acard stats5" id="dashStats"></div>
+    </div>
+    <div class="apanel" id="panel-content"><h2>Site Content</h2>
+      <div class="acard"><h3>Hero</h3><div class="fg">
+        <div class="fld"><label>Badge</label><input id="e_hBadge"></div>
+        <div class="fld"><label>Title (HTML ok)</label><input id="e_hTitle"></div>
+        <div class="fld full"><label>Subtitle</label><textarea id="e_hSub"></textarea></div>
+        <div class="fa"><button class="btn btn-p btn-s" onclick="saveHero()">Save Hero</button></div>
+      </div></div>
+      <div class="acard"><h3>Contact</h3><div class="fg">
+        <div class="fld"><label>Address</label><input id="e_ctAddress"></div>
+        <div class="fld"><label>Phone</label><input id="e_ctPhone"></div>
+        <div class="fld"><label>Email</label><input id="e_ctEmail"></div>
+        <div class="fld"><label>Timing</label><input id="e_ctTiming"></div>
+        <div class="fa"><button class="btn btn-p btn-s" onclick="saveContact()">Save Contact</button></div>
+      </div></div>
+    </div>
+    <div class="apanel" id="panel-coursesA"><h2>Courses</h2>
+      <button class="btn btn-p btn-s" onclick="courseModal()" style="margin-bottom:16px">+ Add Course</button>
+      <div id="coursesAdmin"></div>
+    </div>
+    <div class="apanel" id="panel-noticesA"><h2>Notices</h2>
+      <button class="btn btn-p btn-s" onclick="noticeModal()" style="margin-bottom:16px">+ Add Notice</button>
+      <div id="noticesAdmin"></div>
+    </div>
+    <div class="apanel" id="panel-offersA"><h2>Offers</h2>
+      <button class="btn btn-p btn-s" onclick="offerModal()" style="margin-bottom:16px">+ Add Offer</button>
+      <div id="offersAdmin"></div>
+    </div>
+    <div class="apanel" id="panel-inbox"><h2>Inbox</h2>
+      <h3 style="font-size:.95rem;margin:10px 0">Admission Applications</h3><div id="appsAdmin"></div>
+      <h3 style="font-size:.95rem;margin:20px 0 10px">Contact Messages</h3><div id="msgsAdmin"></div>
+    </div>
+    <div class="apanel" id="panel-db"><h2>Supabase Connection</h2>
+      <div class="acard">
+        <div class="dbst" id="dbStatus">Checking…</div>
+        <div class="fg" style="margin-top:14px">
+          <div class="fld"><label>Project URL</label><input id="sbUrl" placeholder="https://xxxxx.supabase.co"></div>
+          <div class="fld"><label>Anon Key</label><input id="sbKey" placeholder="eyJhbGciOi..."></div>
+          <div class="fa">
+            <button class="btn btn-p btn-s" onclick="connectSB()">Connect</button>
+            <button class="btn btn-o btn-s" onclick="disconnectSB()">Disconnect</button>
+          </div>
+        </div>
+      </div>
+      <div class="acard">
+        <h3>Required Table — run once in Supabase SQL Editor</h3>
+        <pre style="background:var(--ink);color:var(--goldsoft);border-radius:10px;padding:16px;font-size:.74rem;overflow-x:auto">create table site_data (
+  id text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+insert into site_data (id, data) values ('alzeya', '{}'::jsonb);
+alter table site_data enable row level security;
+create policy "public read" on site_data for select using (true);
+create policy "public write" on site_data for all using (true) with check (true);</pre>
+      </div>
+    </div>
+  </div>
+</div></main>
+
+<div class="mov" id="mov" onclick="if(event.target===this)this.classList.remove('open')"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+<button class="afloat" data-nav="login" title="Admin">🔒</button>
+
+<footer><div class="container">
+  <div class="fgrid">
+    <div><h4 style="font-family:var(--serif);font-size:1.2rem;letter-spacing:0;text-transform:none">Al Zeya <em style="color:var(--gold)">Academy</em></h4>
+      <p style="font-size:.87rem">Betiyon ki deeni taleem — mehfooz, parda-dar mahol mein. Bargadhi, Gorakhpur.</p></div>
+    <div><h4>Links</h4><a href="#" data-nav="home">Home</a><a href="#" data-nav="courses">Courses</a><a href="#" data-nav="admission">Admission</a><a href="#" data-nav="notices">Notices</a></div>
+    <div><h4>Contact</h4><a href="#" id="ftPhone"></a><a href="#" id="ftEmail"></a><a href="#" id="ftAddress"></a></div>
+  </div>
+  <div class="fbot"><span>© 2025 Al Zeya Academy — All rights reserved.</span><span style="color:var(--goldsoft);font-style:italic">"Beti ki taleem, quom ki taqat"</span></div>
+</div></footer>
+
+<script>
+/* ================= DATA ================= */
+const DEFAULTS={
+hero:{badge:"Girls Only — Aalimah Course Admissions Open 2025",
+title:'Deeni taleem ki <em>roshni</em>, betiyon ke liye <span class="gold">kamyabi</span> ka raasta.',
+sub:"Al Zeya Academy — Bargadhi, Gorakhpur. Mehfooz aur parda-dar mahol mein larkiyon ke liye Dars-e-Nizami aur Aalimah Course. Tajurba-kar female ustadzaat."},
+contact:{address:"Bargadhi, Gorakhpur, Uttar Pradesh, India",phone:"+91-90000-00000",email:"info@alzeyaacademy.in",timing:"Mon – Sat, 8:00 AM – 2:00 PM"},
+courses:[
+{name:"Jamaat-e-Edadiya (Aamaat)",level:"Bunyadi Marhala",duration:"1 Year",fee:"Fee on request",desc:"Bunyadi deeni taleem, Nazra Quran aur taleemi bunyadain.",subjects:["Nazra Quran","Deeniyaat","Akhlaq","Adab","Urdu","Hindi","English","Maths","General Knowledge","Handwriting","Nazira Tajweed"]},
+{name:"Jamaat-e-Ula",level:"Dusra Marhala",duration:"1 Year",fee:"Fee on request",desc:"Arabic aur Farsi qawaid ka aghaz — Sarf, Nahw, Akhlaq, Tajweed.",subjects:["Sarf","Nahw","Akhlaq","Adab","Tajweed","Farsi","English","Urdu","Deeniyaat"]},
+{name:"Jamaat-e-Saniya",level:"Teesra Marhala",duration:"1 Year",fee:"Fee on request",desc:"Nahw, Adab aur Seerat-e-Mustafa ﷺ ke mutalae.",subjects:["Nahw","Sarf","Adab","Tajweed","Seerat-e-Mustafa ﷺ","Farsi","Urdu","Deeniyaat"]},
+{name:"Jamaat-e-Salisa",level:"Chotha Marhala",duration:"1 Year",fee:"Fee on request",desc:"Fiqh ki darmiyani taleem — Noor-ul-Izah, Quduri Sharif.",subjects:["Nahw","Sarf","Noor-ul-Izah","Quduri Sharif","Seerat","Bahar-e-Shariyat","Farsi","Insha"]},
+{name:"Jamaat-e-Rabiya",level:"Panchwa Marhala",duration:"1 Year",fee:"Fee on request",desc:"Quran, Usool, Hadith aur Fiqh ke gehre mutalae.",subjects:["Quran (Tafseer)","Usool-e-Fiqh","Hadith","Fiqh","Tajweed","Insha","English","Arabic Adab"]},
+{name:"Jamaat-e-Khamisa",level:"Chhata Marhala",duration:"1 Year",fee:"Fee on request",desc:"Hidaya, Mishkaat Sharif aur Tafseer ki taleem.",subjects:["Quran","Hidaya","Mishkaat Sharif","Bahar-e-Shariyat","Usool-e-Tafseer"]},
+{name:"Jamaat-e-Fazilat (Aalimah)",level:"Aakhri Marhala",duration:"1 Year",fee:"Fee on request",desc:"Bukhari, Tirmizi, Jalalain, Tafseer — advanced scholarship.",subjects:["Sahih Bukhari","Jami Tirmizi","Jalalain (Tafseer)","Tafseer-e-Quran","Ja'al Haq","Taleem-o-Tarbiyat","Hidaya"]},
+{name:"Muballighah Course",level:"Da'wah & Tarbiyat",duration:"Special Course",fee:"Fee on request",desc:"Da'wah, bayan aur tarbiyat ka mukammal course.",subjects:["Seerat-un-Nabi ﷺ","Hadith","Shariat","Adab","Khulafa-e-Rashideen","Madani Qaida","Qiraat","Da'wah Training"]}],
+notices:[
+{date:"2025-03-15",title:"Girls Admissions Open — Session 2025-26",body:"Limited seats — pehle aao pehle pao. Sirf larkiyon ke liye.",pinned:true},
+{date:"2025-03-01",title:"Annual Exams Date Sheet Released",body:"Tamam jamaat ki date sheet Notice Board par mojood hai.",pinned:false}],
+offers:[
+{badge:"50% OFF",title:"Early Bird Admission Discount",desc:"Pehle 50 dakhlon par admission fee mein 50% rabat.",valid:"Till 30 April 2025"},
+{badge:"FREE",title:"Merit Scholarship for Toppers",desc:"80%+ marks wali talibaat ke liye poori fee maaf.",valid:"All Year"}],
+applications:[],messages:[]};
+
+let DB=null;
+try{DB=JSON.parse(localStorage.getItem('az_data'))}catch(e){DB=null}
+if(!DB||typeof DB!=='object')DB=JSON.parse(JSON.stringify(DEFAULTS));
+for(const k in DEFAULTS){if(DB[k]===undefined)DB[k]=JSON.parse(JSON.stringify(DEFAULTS[k]))}
+
+let PASS=localStorage.getItem('az_pass')||'alzeya2025';
+let isAdmin=sessionStorage.getItem('az_admin')==='yes';
+
+/* ================= SUPABASE ================= */
+let sb=null,SB_URL=localStorage.getItem('az_sb_url')||'',SB_KEY=localStorage.getItem('az_sb_key')||'';
+function deepMerge(b,e){for(const k in e){if(e[k]&&typeof e[k]==='object'&&!Array.isArray(e[k])&&b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])){b[k]=deepMerge(b[k],e[k])}else{b[k]=e[k]}}return b}
+async function initDB(){
+  updateDbUI(false,'Checking…');
+  if(SB_URL&&SB_KEY){
+    try{
+      sb=supabase.createClient(SB_URL,SB_KEY);
+      const res=await sb.from('site_data').select('data').eq('id','alzeya').single();
+      if(res.error)throw res.error;
+      if(res.data&&res.data.data&&Object.keys(res.data.data).length){
+        DB=deepMerge(DB,res.data.data);
+        localStorage.setItem('az_data',JSON.stringify(DB));
+        renderAll();
+      }else{await pushCloud()}
+      updateDbUI(true,'🟢 Connected — Supabase Cloud');return;
+    }catch(err){console.warn(err);sb=null;updateDbUI(false,'🔴 Offline Mode — localStorage (connect failed)');return}
+  }
+  updateDbUI(false,'🟡 Offline Mode — localStorage (not configured)');
+}
+async function pushCloud(){
+  if(!sb)return;
+  try{
+    const res=await sb.from('site_data').upsert({id:'alzeya',data:DB,updated_at:new Date().toISOString()});
+    if(res.error)throw res.error;
+  }catch(err){console.warn(err);toast('Cloud save failed — saved locally only')}
+}
+function updateDbUI(ok,msg){const el=$('dbStatus');if(el){el.textContent=msg;el.style.color=ok?'var(--green)':'var(--danger)'}}
+function connectSB(){
+  const url=(′sbUrl′).value.trim(),key=('sbUrl').value.trim(),key=(′sbUrl′).value.trim(),key=('sbKey').value.trim();
+  if(!url||!key){toast('URL aur key dono zaroori hain');return}
+  SB_URL=url;SB_KEY=key;
+  localStorage.setItem('az_sb_url',url);localStorage.setItem('az_sb_key',key);
+  sb=supabase.createClient(SB_URL,SB_KEY);
+  pushCloud().then(function(){updateDbUI(true,'🟢 Connected — Supabase Cloud');toast('Supabase connected — data synced!')});
+}
+function disconnectSB(){
+  sb=null;SB_URL='';SB_KEY='';
+  localStorage.removeItem('az_sb_url');localStorage.removeItem('az_sb_key');
+  updateDbUI(false,'🟡 Offline Mode — localStorage');toast('Disconnected — offline mode');
+}
+
+/* ================= HELPERS ================= */
+function $(id){return document.getElementById(id)}
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+function v(id){return $(id).value.trim()}
+function save(){localStorage.setItem('az_data',JSON.stringify(DB));renderAll();renderAdmin();pushCloud()}
+function toast(m){
+  const t=$('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show')},3000);
+}
+function openModal(h){(′modalBox′).innerHTML=′<buttonclass="mb"style="float:right;cursor:pointer"onclick="document.getElementById(mˊov)ˊ.classList.remove(oˊpen)ˊ">✕</button>′+h;('modalBox').innerHTML='<button class="mb" style="float:right;cursor:pointer" onclick="document.getElementById(\'mov\').classList.remove(\'open\')">✕</button>'+h;(′modalBox′).innerHTML=′<buttonclass="mb"style="float:right;cursor:pointer"onclick="document.getElementById(mˊov)ˊ​.classList.remove(oˊpen)ˊ​">✕</button>′+h;('mov').classList.add('open')}
+function closeModal(){$('mov').classList.remove('open')}
+
+/* ================= NAV ================= */
+const PAGES=['home','courses','admission','notices','contact','login','admin'];
+function goPage(p){
+  if(!PAGES.includes(p))p='home';
+  if(p==='admin'&&!isAdmin)p='login';
+  document.querySelectorAll('.page').forEach(function(el){el.classList.remove('active')});
+  $('page-'+p).classList.add('active');
+  document.querySelectorAll('nav.main a[data-nav]').forEach(function(a){a.classList.toggle('active',a.dataset.nav===p)});
+  if(p==='admin')renderAdmin();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',function(e){
+  const n=e.target.closest('[data-nav]');
+  if(n){e.preventDefault();goPage(n.dataset.nav);return}
+  const t=e.target.closest('[data-atab]');
+  if(t){
+    document.querySelectorAll('.atab[data-atab]').forEach(function(b){b.classList.remove('active')});
+    t.classList.add('active');
+    document.querySelectorAll('.apanel').forEach(function(p){p.classList.remove('active')});
+    $('panel-'+t.dataset.atab).classList.add('active');
+  }
+});
+
+/* ================= AUTH ================= */
+$('loginForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if($('loginPass').value===PASS){
+    isAdmin=true;sessionStorage.setItem('az_admin','yes');
+    (′loginPass′).value=′′;('loginPass').value='';(′loginPass′).value=′′;('loginErr').style.display='none';
+    goPage('admin');toast('Khush aamdeed, Admin!');
+  }else{$('loginErr').style.display='block'}
+});
+function logout(){isAdmin=false;sessionStorage.removeItem('az_admin');goPage('home');toast('Logout ho gaya')}
+
+/* ================= PUBLIC RENDER ================= */
+function renderAll(){
+  $('hBadge').textContent=DB.hero.badge;
+  $('hTitle').innerHTML=DB.hero.title;
+  $('hSub').textContent=DB.hero.sub;
+  $('ctAddress').textContent=DB.contact.address;
+  $('ctPhone').textContent=DB.contact.phone;
+  $('ctEmail').textContent=DB.contact.email;
+  $('ctTiming').textContent=DB.contact.timing;
+  $('ftPhone').textContent=DB.contact.phone;
+  $('ftEmail').textContent=DB.contact.email;
+  $('ftAddress').textContent=DB.contact.address;
+  const items=DB.notices.slice(0,8).map(function(n){return '<span>'+esc(n.title)+' •</span>'}).join('');
+  $('ticker').innerHTML=items+items;
+  function nHTML(list){
+    if(!list.length)return '<div class="empty">Abhi koi elaan nahi.</div>';
+    return list.map(function(n){
+      const d=new Date(n.date+'T00:00:00');
+      return '<div class="nrow"><div class="ndate"><b>'+(isNaN(d)?'—':d.getDate())+'</b><span>'+(isNaN(d)?'':d.toLocaleString('en',{month:'short'}))+'</span></div><div><h3>'+esc(n.title)+(n.pinned?' 📌':'')+'</h3><p>'+esc(n.body)+'</p></div></div>';
+    }).join('');
+  }
+  const sorted=[].concat(DB.notices).sort(function(a,b){return ((b.pinned?1:0)-(a.pinned?1:0))||b.date.localeCompare(a.date)});
+  $('homeNotices').innerHTML=nHTML(sorted.slice(0,3));
+  $('allNotices').innerHTML=nHTML(sorted);
+  $('homeOffers').innerHTML=DB.offers.length?DB.offers.map(function(o){
+    return '<div class="orow"><div class="disc">'+esc(o.badge)+'</div><div><h3>'+esc(o.title)+'</h3><p>'+esc(o.desc)+'</p></div><div class="valid">'+esc(o.valid)+'</div></div>';
+  }).join(''):'<div class="empty">Filhal koi offer nahi.</div>';
+  $('coursesGrid').innerHTML=DB.courses.map(function(c,i){
+    return '<div class="ccard"><h3>'+esc(c.name)+'</h3><div class="lvl">'+esc(c.level)+' · '+esc(c.duration)+'</div><p>'+esc(c.desc)+'</p><div class="meta"><span class="pill">'+esc(c.duration)+'</span><span class="pill fee">'+esc(c.fee)+'</span></div><div class="act"><button class="btn btn-o btn-s" onclick="courseDetails('+i+')">Explore Course</button><button class="btn btn-p btn-s" onclick="applyFor('+i+')">Apply Now</button></div></div>';
+  }).join('');
+  $('aCourse').innerHTML='<option value="">— Course chunein —</option>'+DB.courses.map(function(c){return '<option>'+esc(c.name)+'</option>'}).join('');
+}
+function courseDetails(i){
+  const c=DB.courses[i],s=c.subjects||[];
+  openModal('<h3>'+esc(c.name)+'</h3><p style="color:var(--inksoft);font-size:.88rem">'+esc(c.desc)+'</p><div class="subgrid">'+s.map(function(x){return '<div>📖 '+esc(x)+'</div>'}).join('')+'</div><button class="btn btn-p" style="width:100%;justify-content:center" onclick="closeModal();applyFor('+i+')">Apply Now</button>');
+}
+function applyFor(i){
+  goPage('admission');
+  const sel=$('aCourse'),name=DB.courses[i].name;
+  setTimeout(function(){for(let j=0;j<sel.options.length;j++){if(sel.options[j].text===name)sel.selectedIndex=j}},100);
+}
+$('admForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  DB.applications.unshift({name:v('aName'),father:v('aFather'),phone:v('aPhone'),course:v('aCourse'),lastClass:v('aClass'),msg:v('aMsg'),date:new Date().toLocaleString(),status:'new'});
+  save();e.target.reset();toast('Application received! Hum 24 ghante mein raabta karenge.');
+});
+$('ctForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  DB.messages.unshift({name:v('cName'),phone:v('cPhone'),msg:v('cMsg'),date:new Date().toLocaleString(),status:'new'});
+  save();e.target.reset();toast('Paigham mil gaya — shukriya!');
+});
+
+/* ================= ADMIN ================= */
+function renderAdmin(){
+  $('dashStats').innerHTML=
+    '<div><b>'+DB.courses.length+'</b><span>Courses</span></div>'+
+    '<div><b>'+DB.notices.length+'</b><span>Notices</span></div>'+
+    '<div><b>'+DB.offers.length+'</b><span>Offers</span></div>'+
+    '<div><b>'+DB.applications.length+'</b><span>Applications</span></div>'+
+    '<div><b>'+DB.messages.length+'</b><span>Messages</span></div>';
+  (′ehBadge′).value=DB.hero.badge;('e_hBadge').value=DB.hero.badge;(′eh​Badge′).value=DB.hero.badge;('e_hTitle').value=DB.hero.title;$('e_hSub').value=DB.hero.sub;
+  (′ectAddress′).value=DB.contact.address;('e_ctAddress').value=DB.contact.address;(′ec​tAddress′).value=DB.contact.address;('e_ctPhone').value=DB.contact.phone;(′ectEmail′).value=DB.contact.email;('e_ctEmail').value=DB.contact.email;(′ec​tEmail′).value=DB.contact.email;('e_ctTiming').value=DB.contact.timing;
+  (′sbUrl′).value=SBURL;('sbUrl').value=SB_URL;(′sbUrl′).value=SBU​RL;('sbKey').value=SB_KEY;
+  function row(main,sub,acts){
+    return '<div class="drow"><div class="m"><b>'+main+'</b><span>'+sub+'</span></div><div class="a">'+acts+'</div></div>';
+  }
+  $('coursesAdmin').innerHTML=DB.courses.length?DB.courses.map(function(c,i){
+    return row(esc(c.name),esc(c.level)+' · '+esc(c.duration)+' · '+((c.subjects||[]).length)+' subjects',
+    '<button class="mb" onclick="courseModal('+i+')">✎</button><button class="mb" onclick="subsModal('+i+')">📋</button><button class="mb del" onclick="delItem(\'courses\','+i+')">🗑</button>');
+  }).join(''):'<div class="empty">Koi course nahi.</div>';
+  $('noticesAdmin').innerHTML=DB.notices.length?DB.notices.map(function(n,i){
+    return row(esc(n.title)+(n.pinned?' <span class="sbadge">Pinned</span>':''),esc(n.date)+' · '+esc(n.body.slice(0,50)),
+    '<button class="mb" onclick="noticeModal('+i+')">✎</button><button class="mb del" onclick="delItem(\'notices\','+i+')">🗑</button>');
+  }).join(''):'<div class="empty">Koi elaan nahi.</div>';
+  $('offersAdmin').innerHTML=DB.offers.length?DB.offers.map(function(o,i){
+    return row(esc(o.badge)+' — '+esc(o.title),esc(o.valid),
+    '<button class="mb" onclick="offerModal('+i+')">✎</button><button class="mb del" onclick="delItem(\'offers\','+i+')">🗑</button>');
+  }).join(''):'<div class="empty">Koi offer nahi.</div>';
+  $('appsAdmin').innerHTML=DB.applications.length?DB.applications.map(function(a,i){
+    return '<div class="drow" style="align-items:flex-start"><div class="m"><b>'+esc(a.name)+' <span class="sbadge">'+a.status+'</span></b><span>'+esc(a.course)+' · '+esc(a.phone)+' · Father: '+esc(a.father)+(a.lastClass?' · '+esc(a.lastClass):'')+'</span>'+(a.msg?'<span style="font-style:italic">"'+esc(a.msg)+'"</span>':'')+'<span style="font-size:.7rem;opacity:.6">'+esc(a.date)+'</span></div><div class="a">'+(a.status==='new'?'<button class="mb" onclick="markApp('+i+')">✓</button>':'')+'<button class="mb del" onclick="delItem(\'applications\','+i+')">🗑</button></div></div>';
+  }).join(''):'<div class="empty">Koi application nahi.</div>';
+  $('msgsAdmin').innerHTML=DB.messages.length?DB.messages.map(function(m,i){
+    return '<div class="drow" style="align-items:flex-start"><div class="m"><b>'+esc(m.name)+' <span class="sbadge">'+m.status+'</span></b><span>'+esc(m.phone)+'</span><span style="font-style:italic">"'+esc(m.msg)+'"</span><span style="font-size:.7rem;opacity:.6">'+esc(m.date)+'</span></div><div class="a">'+(m.status==='new'?'<button class="mb" onclick="markMsg('+i+')">✓</button>':'')+'<button class="mb del" onclick="delItem(\'messages\','+i+')">🗑</button></div></div>';
+  }).join(''):'<div class="empty">Koi paigham nahi.</div>';
+}
+function markApp(i){DB.applications[i].status='read';save()}
+function markMsg(i){DB.messages[i].status='read';save()}
+function delItem(list,i){if(!confirm('Pakka delete karein?'))return;DB[list].splice(i,1);save();toast('Deleted')}
+
+function saveHero(){DB.hero.badge=v('e_hBadge');DB.hero.title=v('e_hTitle');DB.hero.sub=v('e_hSub');save();toast('Hero saved!')}
+function saveContact(){DB.contact.address=v('e_ctAddress');DB.contact.phone=v('e_ctPhone');DB.contact.email=v('e_ctEmail');DB.contact.timing=v('e_ctTiming');save();toast('Contact saved!')}
+
+function courseModal(i){
+  const c=i!=null?DB.courses[i]:{name:'',level:'',duration:'',fee:'',desc:''};
+  openModal('<h3>'+(i!=null?'Edit Course':'Add Course')+'</h3><p style="font-size:.82rem;color:var(--inksoft)">Subjects ke liye save ke baad 📋 button dabayein.</p><div class="fg" style="margin-top:10px">'+
+  '<div class="fld"><label>Name *</label><input id="m_name" value="'+esc(c.name)+'"></div>'+
+  '<div class="fld"><label>Level *</label><input id="m_level" value="'+esc(c.level)+'"></div>'+
+  '<div class="fld"><label>Duration *</label><input id="m_dur" value="'+esc(c.duration)+'"></div>'+
+  '<div class="fld"><label>Fee *</label><input id="m_fee" value="'+esc(c.fee)+'"></div>'+
+  '<div class="fld full"><label>Description *</label><textarea id="m_desc">'+esc(c.desc)+'</textarea></div>'+
+  '<div class="fa"><button class="btn btn-p btn-s" onclick="saveCourse('+i+')">Save</button></div></div>');
+}
+function saveCourse(i){
+  const o={name:v('m_name'),level:v('m_level'),duration:v('m_dur'),fee:v('m_fee'),desc:v('m_desc')};
+  if(!o.name||!o.level){toast('Name aur Level zaroori hain');return}
+  if(i!=null){o.subjects=DB.courses[i].subjects||[];DB.courses[i]=o}else{o.subjects=[];DB.courses.push(o)}
+  save();closeModal();toast('Course saved!');
+}
+
+let _se={subs:[],idx:null};
+function subsModal(i){
+  _se={subs:(DB.courses[i].subjects||[]).slice(),idx:i};
+  openModal('<h3>Subjects — '+esc(DB.courses[i].name)+'</h3><div id="subList" style="margin:14px 0"></div>'+
+  '<div style="display:flex;gap:10px"><input id="newSub" placeholder="Naya subject…" style="flex:1;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px"><button class="btn btn-o btn-s" onclick="addSub()">Add</button></div>'+
+  '<button class="btn btn-p btn-s" style="width:100%;justify-content:center;margin-top:14px" onclick="saveSubs()">Save Subjects</button>');
+  drawSubs();
+  $('newSub').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addSub()}});
+}
+function drawSubs(){
+  $('subList').innerHTML=_se.subs.length?_se.subs.map(function(s,j){
+    return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:7px"><input value="'+esc(s)+'" class="sub-in" style="flex:1;border:1.5px solid var(--line);border-radius:9px;padding:9px 12px;font-size:.88rem"><button class="mb del" onclick="_se.subs.splice('+j+',1);drawSubs()">✕</button></div>';
+  }).join(''):'<div class="empty">Koi subject nahi.</div>';
+}
+function addSub(){
+  const inp=$('newSub'),val=inp.value.trim();
+  if(!val)return;_se.subs.push(val);inp.value='';drawSubs();inp.focus();
+}
+function saveSubs(){
+  const arr=[].map.call(document.querySelectorAll('#subList .sub-in'),function(x){return x.value.trim()}).filter(Boolean);
+  DB.courses[_se.idx].subjects=arr;save();closeModal();toast('Subjects saved!');
+}
+
+function noticeModal(i){
+  const n=i!=null?DB.notices[i]:{date:new Date().toISOString().slice(0,10),title:'',body:'',pinned:false};
+  openModal('<h3>'+(i!=null?'Edit Notice':'Add Notice')+'</h3><div class="fg" style="margin-top:10px">'+
+  '<div class="fld"><label>Title *</label><input id="n_title" value="'+esc(n.title)+'"></div>'+
+  '<div class="fld"><label>Date *</label><input type="date" id="n_date" value="'+esc(n.date)+'"></div>'+
+  '<div class="fld full"><label>Body *</label><textarea id="n_body">'+esc(n.body)+'</textarea></div>'+
+  '<div class="fld full" style="flex-direction:row;align-items:center;gap:10px"><input type="checkbox" id="n_pin" style="width:auto" '+(n.pinned?'checked':'')+'><label style="margin:0">Pin to top</label></div>'+
+  '<div class="fa"><button class="btn btn-p btn-s" onclick="saveNotice('+i+')">Publish</button></div></div>');
+}
+function saveNotice(i){
+  const o={title:v('n_title'),date:v('n_date'),body:v('n_body'),pinned:$('n_pin').checked};
+  if(!o.title||!o.date){toast('Title aur Date zaroori');return}
+  if(i!=null){DB.notices[i]=o}else{DB.notices.unshift(o)}
+  save();closeModal();toast('Elaan published!');
+}
+
+function offerModal(i){
+  const o=i!=null?DB.offers[i]:{badge:'',title:'',desc:'',valid:''};
+  openModal('<h3>'+(i!=null?'Edit Offer':'Add Offer')+'</h3><div class="fg" style="margin-top:10px">'+
+  '<div class="fld"><label>Badge *</label><input id="o_badge" value="'+esc(o.badge)+'" placeholder="50% OFF"></div>'+
+  '<div class="fld"><label>Valid Till *</label><input id="o_valid" value="'+esc(o.valid)+'"></div>'+
+  '<div class="fld full"><label>Title *</label><input id="o_title" value="'+esc(o.title)+'"></div>'+
+  '<div class="fld full"><label>Description *</label><textarea id="o_desc">'+esc(o.desc)+'</textarea></div>'+
+  '<div class="fa"><button class="btn btn-p btn-s" onclick="saveOffer('+i+')">Publish</button></div></div>');
+}
+function saveOffer(i){
+  const o={badge:v('o_badge'),title:v('o_title'),desc:v('o_desc'),valid:v('o_valid')};
+  if(!o.badge||!o.title){toast('Badge Title zaroori');return}
+  if(i!=null){DB.offers[i]=o}else{DB.offers.unshift(o)}
+  save();closeModal();toast('Offer published!');
+}
+
+/* ================= BOOT ================= */
+renderAll();
+initDB();
+</script>
+</body>
+</html>
